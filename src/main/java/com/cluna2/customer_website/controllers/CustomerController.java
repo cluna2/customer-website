@@ -1,5 +1,6 @@
 package com.cluna2.customer_website.controllers;
 
+import com.cluna2.customer_website.exceptions.NoSuchCustomerException;
 import com.cluna2.customer_website.models.Customer;
 import com.cluna2.customer_website.services.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,15 @@ public class CustomerController {
 
     @GetMapping("/")
     public String viewHomePage(Model model) {
-        final List<Customer> customerList = customerService.getAllCustomers();
-
-        model.addAttribute("customerList", customerList);
-
-        return "index";
+        try {
+            final List<Customer> customerList = customerService.getAllCustomers();
+            model.addAttribute("customerList", customerList);
+            return "index";
+        } catch (NoSuchCustomerException e) {
+            model.addAttribute("message",
+                    "Customer list is empty: " + e.getMessage());
+            return "error-page";
+        }
     }
 
     @GetMapping("/new")
@@ -36,9 +41,16 @@ public class CustomerController {
 
     @GetMapping("/save")
     public String saveCustomer(
-            @ModelAttribute("customer") Customer customer) {
-        customerService.saveCustomer(customer);
-        return "redirect:/";
+            @ModelAttribute("customer") Customer customer, Model model) {
+        try {
+            customerService.saveCustomer(customer);
+            return "redirect:/";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("message",
+                    "Customer passed in is null: " + e.getMessage());
+            return "error-page";
+        }
+
     }
 
     @GetMapping("/edit/{id}")
