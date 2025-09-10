@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Customer</title>
+</head>
+<body>
+<div class="center">
+  <h1 style="display: flex; justify-content: center;">Edit Customer</h1>
+  <br/>
+  <form action="#" th:action="@{'/update/' + ${customer.id}}"
+        th:object="${customer}" method="post">
+    <table style="display: flex; justify-content: center;">
+      <tr class="tr">
+        <td class="td">Customer ID: </td>
+        <td class="td">
+          <label>
+            <input type="text" th:field="*{id}" readonly/>
+          </label>
+        </td>
+      </tr>
+      <tr class="tr">
+        <td class="td">Customer Name: </td>
+        <td class="td">
+          <label>
+            <input type="text" th:field="*{fullName}"
+                   required/>
+          </label>
+        </td>
+      </tr>
+      <tr class="tr">
+        <td class="td">Email Address: </td>
+        <td class="td">
+          <label>
+            <input type="text" th:field="*{emailAddress}"
+                   required/>
+          </label>
+        </td>
+      </tr>
+      <tr class="tr">
+        <td class="td">Age: </td>
+        <td class="td">
+          <label>
+            <input type="number" th:field="*{age}"
+                   required/>
+          </label>
+        </td>
+      </tr>
+      <tr class="tr">
+        <td class="td">Address: </td>
+        <td class="td">
+          <label>
+            <textarea th:field="*{address}" required></textarea>
+          </label>
+        </td>
+      </tr>
+      <tr class="tr">
+        <td colspan="2"><button type="submit">Save</button> </td>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>

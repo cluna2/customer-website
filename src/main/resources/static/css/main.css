@@ -1,0 +1,22 @@
+.center {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+  align-items: center;
+}
+
+.table {
+    width: 60%; /* Adjust width as needed */
+    margin: auto; /* Centers table horizontally */
+    border-collapse: collapse;
+    border: 1,
+
+}
+
+.th, .td, .tr{
+    padding: 10px;
+    border: 1px solid #333;
+    text-align: center;
+}
