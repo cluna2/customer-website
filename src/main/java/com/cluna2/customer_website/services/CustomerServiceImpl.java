@@ -1,6 +1,9 @@
 package com.cluna2.customer_website.services;
 
+import com.cluna2.customer_website.exceptions.CarAlreadyAssignedException;
+import com.cluna2.customer_website.exceptions.NoSuchCarException;
 import com.cluna2.customer_website.exceptions.NoSuchCustomerException;
+import com.cluna2.customer_website.models.Car;
 import com.cluna2.customer_website.models.Customer;
 import com.cluna2.customer_website.repositories.CustomerRepo;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +22,12 @@ public class CustomerServiceImpl implements CustomerService{
 
 
     @Override
-    public List<Customer> getAllCustomers() throws NoSuchCustomerException {
-
-        List<Customer> customers = customerRepo.findAll();
-        if (customers.isEmpty()) {
-            throw new NoSuchCustomerException("No customers exist.");
-        }
-        return customers;
+    public List<Customer> getAllCustomers(){
+        return customerRepo.findAll();
     }
 
     @Override
+    @Transactional
     public Customer saveCustomer(Customer customer) throws IllegalArgumentException {
         if (customer == null) {
             throw new IllegalArgumentException("Customer must not be null.");
@@ -39,6 +38,9 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer getCustomer(Long id) throws NoSuchCustomerException {
+        if (id == null) {
+            throw new NoSuchCustomerException("Customer ID is null.");
+        }
         Optional<Customer> customerOptional = customerRepo.findById(id);
         if (customerOptional.isEmpty()) {
             throw new NoSuchCustomerException("Customer with ID: " + id +
@@ -50,12 +52,11 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     @Transactional
     public void deleteCustomer(Long id) throws NoSuchCustomerException {
-        try {
-            Customer customer = getCustomer(id);
-            customerRepo.deleteById(id);
-        } catch (NoSuchCustomerException e) {
-            throw new NoSuchCustomerException("Could not delete: " + e.getMessage());
+        Customer customer = getCustomer(id);
+        if (customer.getCar() != null) {
+            throw new CarAlreadyAssignedException("Cannot delete customer that is assigned to a car.");
         }
+        customerRepo.delete(customer);
     }
 
     @Override
@@ -65,5 +66,35 @@ public class CustomerServiceImpl implements CustomerService{
             throw new IllegalArgumentException("List of customers must not be empty.");
         }
         return customerRepo.saveAll(customerList);
+    }
+
+    @Override
+    @Transactional
+    public Customer assignCar(Long customerId, Car car)
+            throws NoSuchCustomerException, CarAlreadyAssignedException, NoSuchCarException{
+        if (car == null) {
+            throw new NoSuchCarException("Car passed in is null.");
+        }
+        if (car.getCustomer() != null) {
+            throw new CarAlreadyAssignedException("Car with ID: " +
+                    car.getId() + " is already assigned to a different customer.");
+        }
+        Customer customer = getCustomer(customerId);
+        customer.setCar(car);
+        customer = saveCustomer(customer);
+        return customer;
+    }
+
+    @Override
+    @Transactional
+    public Customer removeCar(Long id) throws NoSuchCustomerException {
+        if (id == null) {
+            throw new NoSuchCustomerException("Id must not be null.");
+        }
+        Customer customer = getCustomer(id);
+        if (customer.getCar() != null) {
+            customer.setCar(null);
+        }
+        return customerRepo.save(customer);
     }
 }

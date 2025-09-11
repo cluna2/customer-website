@@ -1,9 +1,6 @@
 package com.cluna2.customer_website.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -23,4 +20,8 @@ public class Customer {
     private String emailAddress;
     private Integer age;
     private String address;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_id")
+    private Car car;
 }

@@ -1,5 +1,6 @@
 package com.cluna2.customer_website.services;
 
+import com.cluna2.customer_website.models.Car;
 import com.cluna2.customer_website.models.Customer;
 
 import java.util.List;
@@ -15,4 +16,8 @@ public interface CustomerService {
     void deleteCustomer(Long id);
 
     List<Customer> saveAllCustomer(List<Customer> customerList);
+
+    Customer assignCar(Long customerId, Car car);
+
+    Customer removeCar(Long id);
 }

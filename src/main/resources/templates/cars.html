@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>Car Manager</title>
+</head>
+<body>
+<div>
+  <h1 style="text-align: center;">Create New Car</h1>
+  <br/>
+  <br/>
+  <a style="display: flex; justify-content: center;" th:href="@{/}">Customer List</a>
+  <a style="display: flex; justify-content: center;" th:href="@{new-car}">Add New Car</a>
+  <br/>
+  <table class="table">
+    <thead>
+    <tr>
+      <th class="th">Car ID</th>
+      <th class="th">Color</th>
+      <th class="th">Make</th>
+      <th class="th">Model</th>
+      <th class="th">License</th>
+      <th class="th">Assigned Customer</th>
+      <th class="th">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="car : ${carList}">
+      <td class="td" th:text="${car.id}">Car ID</td>
+      <td class="td" th:text="${car.color}">Color</td>
+      <td class="td" th:text="${car.make}">Make</td>
+      <td class="td" th:text="${car.model}">Model</td>
+      <td class="td" th:text="${car.license}">License</td>
+      <td class="td" th:text="${(car.customer != null) ? car.customer.getId() : ''}">Assigned Customer</td>
+      <td class="td">
+        <a th:href="@{'/edit-car/' + ${car.id}}">Edit</a>
+        <a th:href="@{'/delete-car/' + ${car.id}}">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

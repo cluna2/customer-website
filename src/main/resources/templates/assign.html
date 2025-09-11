@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Car</title>
+</head>
+<body>
+<div>
+    <h1 style="text-align: center;">Assign Car</h1>
+    <a style="display: flex; justify-content: center;" th:href="@{/}">Customer List</a>
+    <br/>
+    <form action="#" th:action="@{/cars/assign}" method="post">
+        <input type="hidden" name="customerId" th:value="${customer.id}"/>
+        <table style="display: flex; justify-content: center;" class="table">
+            <tr class="tr">
+                <td class="td">Customer Name: </td>
+                <td class="td"><strong><span th:text="${customer.fullName}"></span></strong></td>
+            </tr>
+            <tr class="tr">
+                <td class="td">Customer Email: </td>
+                <td class="td"><strong><span th:text="${customer.emailAddress}"></span></strong></td>
+            </tr>
+            <tr class="tr">
+                <td class="td">
+                    Assign Car:
+                    <label>
+                        <select class="form-select" th:name="carId">
+                            <option th:if="${carList.isEmpty()}">None Available</option>
+                            <option th:each="car: ${carList}" th:value="${car.id}" th:text="${car.toString()}"></option>
+                        </select>
+                    </label>
+                </td>
+            </tr>
+            <tr class="tr">
+                <td><button type="submit" th:disabled="${carList.isEmpty()}">Save</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

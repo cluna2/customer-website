@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Car</title>
+</head>
+<body>
+<div class="center">
+  <h1 style="text-align: center;">Edit Car</h1>
+  <br/>
+  <br/>
+  <form action="#" th:action="@{'/update-car/' + ${car.id}}"
+        th:object="${car}" method="post">
+    <table style="display: flex; justify-content: center;" class="table">
+      <tr>
+        <td class="td">ID: </td>
+        <td class="td">
+          <label>
+            <input type="text" th:field="*{id}" readonly/>
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <td class="td">Color : </td>
+        <td class="td">
+          <label>
+            <input type="text" th:field="*{color}"
+                   required/>
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <td class="td">Make : </td>
+        <td class="td">
+          <label>
+            <input type="text" th:field="*{make}"
+                   required/>
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <td>Model:  </td>
+        <td>
+          <label>
+            <input type="text" th:field="*{model}"
+                   required/>
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <td>License: </td>
+        <td class="td">
+          <label>
+            <input type="text" th:field="*{license}"
+                   required/>
+          </label>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="td" colspan="2">
+          <button type="submit">Save</button>
+        </td>
+      </tr>
+
+    </table>
+  </form>
+</div>
+
+</body>
+</html>
